@@ -1,43 +1,78 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Dimensions, TextInput, Button } from 'react-native';
 
-const { width, height } = Dimensions.get('window')
+
 export default App = () => {
+  const { width, height } = Dimensions.get('window')
+  const [todo, setTodo] = useState('')
+  const [hastext, setHastext] = useState(false)
+  const [todoList, setTodoList] = useState([])
+  const [number, setNumber] = useState(1)
+
+  const ChangeToDo = (text) => {
+    if (!hastext) {
+      setTodo(number + '. ' + text)
+      setNumber(number+1)
+      setHastext(true)
+    }
+    else
+      setTodo(text)
+    if (text.length <= 0) {
+      setHastext(false)
+    }
+  }
+
+  
   return (
     <View style={styles.container}>
+      <StatusBar styles="auto" />
 
-      <View style={{ flexDirection: 'row' }}>
+      <Text style={{ marginTop: 80, marginBottom: 30,fontSize: 25, padding: 20, width: 250, textAlign: 'center' }}>
+        Welcome to your To-Do List!</Text>
 
-        <View style={{ flex: 1, backgroundColor: 'white', height: 100, width: 100, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>This is the Header</Text>
-        </View>
+      <View style={{padding:10, width: width - 30, alignItems: 'flex-start' }}>
 
+        <TextInput
+          style={{ borderBottomWidth: 1, width: width - 50 }}
+          placeholder={'Enter your task here'}
+          onChangeText={ChangeToDo}
+          value={todo}>
+        </TextInput>
+        
       </View>
 
-      <View style={{ flex:1, flexDirection: 'row', width: width, justifyContent: 'space-evenly', alignItems:'center' }}>
-        <View style={{  backgroundColor: 'pink', height: 100, width, width: 100, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>Level 1</Text>
-        </View>
-        <View style={{  backgroundColor: 'blue', height: 100, width, width: 100, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>Level 2</Text>
-        </View>
-      </View>
-      <View style={{ flexDirection: 'row' }}>
-
-        <View style={{ flex: 1, backgroundColor: 'orange', height: 100, width, width: 100, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>Start</Text>
-        </View>
-        <View style={{ flex: 1, backgroundColor: 'yellow', height: 100, width, width: 100,justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Options</Text>
-        </View>
+      <View style={{ flex: 1, padding:10, width: width - 30, alignItems: 'flex-start', backgroundColor:'red'}}>
+        <Text style={{fontSize: 20, marginBottom: 10}}>TO-DO List:
+          
+        </Text>
+        {
+          todoList.map((item, index) =>
+          {
+            return (
+              <Text style={{fontSize: 15, marginBottom:7}} key={index}>{item}</Text>
+            )
+          })
+        }
+  
       </View>
 
+      <View style={{ justifyContent: 'center', height: 200, width: 150 }}>
+        <Button title={'Add Task'} onPress={() =>
+          {
+            if(todo === "")
+            {
+              
+            }else{
+            setTodoList([...todoList, todo])
+            setHastext(false)
+            setTodo("")
+            }
+          } }></Button>
 
+      </View>
 
     </View>
-
-
 
   );
 }
@@ -46,8 +81,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1, //% of screen you are in control of
     flexDirection: 'column', //change orientation of default
-    backgroundColor: 'red',//color of selected content
-    alignItems: 'flex-start', //horizontal axis (row)
-    justifyContent: 'space-between', //default, vertical axis (column)
+    // backgroundColor: 'blue',//color of selected content
+    alignItems: 'center', //horizontal axis (row)
+    justifyContent: 'flex-start', //default, vertical axis (column)
   },
 });
